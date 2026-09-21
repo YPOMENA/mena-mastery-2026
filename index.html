@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>MENA Mastery — Registration Dashboard</title>
+<link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <h1>YPO MENA <strong>MENA Mastery</strong></h1>
+      <div class="sub">Registration Dashboard — Attendance by Chapter &amp; Role</div>
+    </div>
+    <div class="datebadge">Data as of <strong>21 Sep 2026</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <div class="panels">
+    <div class="panel">
+      <h3>Registrants by Chapter</h3>
+      <div id="zeroCallout"></div>
+      <div id="chapterBars"></div>
+    </div>
+    <div class="panel">
+      <h3>Session Attendance</h3>
+      <div class="session-cards" id="sessionCards"></div>
+      <h3 style="margin-top:18px;">Spouse/Partner Attending</h3>
+      <div class="session-cards" id="spouseCards"></div>
+    </div>
+  </div>
+
+  <div class="section-title">Role Breakdown (All Chapters)<div class="line"></div></div>
+  <div class="panel" id="roleBars"></div>
+
+  <div class="section-title">Chapter Breakdown by Role<div class="line"></div></div>
+
+  <div class="legend" id="legendBar"></div>
+
+  <div class="filters">
+    <input type="text" id="searchBox" placeholder="Search chapter..." />
+    <select id="roleFilter"><option value="">All Roles</option></select>
+    <select id="sessionFilter">
+      <option value="">All Sessions</option>
+      <option value="Welcome Social">Welcome Social</option>
+      <option value="MENA Mastery Sessions">MENA Mastery Sessions</option>
+      <option value="MENA White Party">MENA White Party</option>
+    </select>
+    <span class="reset" id="resetFilters">Reset filters</span>
+  </div>
+
+  <div class="result-count" id="resultCount"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-key="chapter" style="width:26%">Chapter<span class="arrow">▲</span></th>
+          <th>Role Breakdown</th>
+          <th data-key="total" style="width:8%">Total<span class="arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    YPO MENA Mastery &nbsp;·&nbsp; 90 invitees/registrants tracked across 26 chapters &nbsp;·&nbsp; No individual names shown — aggregate counts only
+  </div>
+
+</div>
+
+<script src="src/data.js"></script>
+<script src="src/dashboard.js"></script>
+</body>
+</html>
