@@ -94,7 +94,7 @@ function el(tag, attrs, children) {
 // ---------- KPI cards ----------
 function renderKPIs() {
   const total = REGISTRANTS.length;
-  const chapters = new Set(REGISTRANTS.map(r => r.chapter)).size;
+  const chapters = new Set(REGISTRANTS.map(r => r.chapter).filter(c => !PINNED_LABELS.includes(c))).size;
   const welcome = REGISTRANTS.filter(r => r.sessions.includes("Welcome Social")).length;
   const mastery = REGISTRANTS.filter(r => r.sessions.includes("MENA Mastery Sessions")).length;
   const white = REGISTRANTS.filter(r => r.sessions.includes("MENA White Party")).length;
