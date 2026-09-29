@@ -237,6 +237,12 @@ function renderLegend() {
 let sortKey = "chapter";
 let sortDir = 1;
 
+// Ties on total fall back to chapter name A–Z so the order is stable.
+function compareRows(a, b) {
+  if (sortKey === "total") return sortDir * (a.total - b.total) || a.chapter.localeCompare(b.chapter);
+  return sortDir * a.chapter.localeCompare(b.chapter);
+}
+
 function populateFilterOptions() {
   const roleSel = document.getElementById("roleFilter");
   ROLE_ORDER.forEach(r => {
@@ -266,11 +272,7 @@ function buildChapterBreakdown(filtered) {
       return { chapter, roleCounts, total };
     });
 
-  if (sortKey === "chapter") {
-    rows.sort((a, b) => sortDir * a.chapter.localeCompare(b.chapter));
-  } else if (sortKey === "total") {
-    rows.sort((a, b) => sortDir * (a.total - b.total));
-  }
+  rows.sort(compareRows);
 
   // Pinned non-chapter rows (YPO Management/staff) always come last, unsorted.
   PINNED_LABELS.forEach(label => {
@@ -303,8 +305,7 @@ function applyFiltersAndRender() {
     zeroChapters().forEach(chapter => {
       if (!present.has(chapter)) unpinned.push({ chapter, roleCounts: {}, total: 0, isZero: true });
     });
-    if (sortKey === "chapter") unpinned.sort((a, b) => sortDir * a.chapter.localeCompare(b.chapter));
-    else if (sortKey === "total") unpinned.sort((a, b) => sortDir * (a.total - b.total));
+    unpinned.sort(compareRows);
     rows = [...unpinned, ...pinned];
   }
 
@@ -376,16 +377,41 @@ function renderTable(rows) {
   body.appendChild(gTr);
 }
 
+// Keeps the header arrows, aria-sort and the "Sort by" dropdown in step with sortKey/sortDir.
+function syncSortUI() {
+  document.querySelectorAll("thead th[data-key]").forEach(th => {
+    const active = th.getAttribute("data-key") === sortKey;
+    th.classList.toggle("sorted", active);
+    th.querySelector(".arrow").textContent = active ? (sortDir === 1 ? "▲" : "▼") : "⇅";
+    th.setAttribute("aria-sort", active ? (sortDir === 1 ? "ascending" : "descending") : "none");
+  });
+  document.getElementById("sortSelect").value = `${sortKey}:${sortDir}`;
+}
+
+function setSort(key, dir) {
+  sortKey = key;
+  sortDir = dir;
+  syncSortUI();
+  applyFiltersAndRender();
+}
+
 function setupSortableHeaders() {
   document.querySelectorAll("thead th[data-key]").forEach(th => {
-    th.addEventListener("click", () => {
+    th.tabIndex = 0;
+    const toggle = () => {
       const key = th.getAttribute("data-key");
-      if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = key === "total" ? -1 : 1; }
-      document.querySelectorAll("thead th .arrow").forEach(a => a.textContent = "");
-      th.querySelector(".arrow").textContent = sortDir === 1 ? "▲" : "▼";
-      applyFiltersAndRender();
+      setSort(key, sortKey === key ? -sortDir : (key === "total" ? -1 : 1));
+    };
+    th.addEventListener("click", toggle);
+    th.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
     });
   });
+  document.getElementById("sortSelect").addEventListener("change", e => {
+    const [key, dir] = e.target.value.split(":");
+    setSort(key, Number(dir));
+  });
+  syncSortUI();
 }
 
 function setupFilterEvents() {
@@ -397,7 +423,7 @@ function setupFilterEvents() {
     document.getElementById("searchBox").value = "";
     document.getElementById("roleFilter").value = "";
     document.getElementById("sessionFilter").value = "";
-    applyFiltersAndRender();
+    setSort("chapter", 1);
   });
 }
 

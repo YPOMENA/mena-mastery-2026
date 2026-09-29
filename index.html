@@ -52,6 +52,13 @@
       <option value="MENA Mastery Sessions">MENA Mastery Sessions</option>
       <option value="MENA White Party">MENA White Party</option>
     </select>
+    <label class="sort-label" for="sortSelect">Sort by</label>
+    <select id="sortSelect">
+      <option value="chapter:1">Chapter (A–Z)</option>
+      <option value="chapter:-1">Chapter (Z–A)</option>
+      <option value="total:-1">Total (high to low)</option>
+      <option value="total:1">Total (low to high)</option>
+    </select>
     <span class="reset" id="resetFilters">Reset filters</span>
   </div>
 
@@ -61,9 +68,9 @@
     <table>
       <thead>
         <tr>
-          <th data-key="chapter" style="width:26%">Chapter<span class="arrow">▲</span></th>
+          <th data-key="chapter" title="Sort by chapter name" style="width:26%">Chapter<span class="arrow"></span></th>
           <th>Role Breakdown</th>
-          <th data-key="total" style="width:8%">Total<span class="arrow"></span></th>
+          <th data-key="total" title="Sort by total registrations" style="width:8%">Total<span class="arrow"></span></th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
