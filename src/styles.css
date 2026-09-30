@@ -126,6 +126,7 @@
 
   .pinned-row td { background: var(--row-alt); font-style: italic; }
   .pinned-row .chapter-cell { border-left: 3px solid var(--muted); padding-left: 13px; font-style: italic; }
+  .pinned-row .total-cell { background: #6b7280; font-style: normal; }
   .pinned-tag {
     display: inline-block; font-size: 10px; color: var(--muted); font-style: normal;
     border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; margin-left: 6px;

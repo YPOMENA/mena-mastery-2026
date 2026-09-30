@@ -39,7 +39,10 @@ const REGISTRANTS = [
 
 The chapter master list (used to flag chapters with zero registrations) lives near
 the top of `src/dashboard.js` as `FULL_CHAPTER_LIST`. Update it there if the roster
-of MENA chapters changes.
+of MENA chapters changes. Any chapter in the data that is not on this list (e.g. "No
+Chapter Needed" for YPO staff, or a guest panelist's home chapter) is never counted as
+a MENA chapter; it is pinned to the bottom of chapter lists with a tag from
+`PINNED_TAGS`.
 
 ## Deploying on GitHub Pages
 

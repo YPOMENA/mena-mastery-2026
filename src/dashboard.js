@@ -76,9 +76,18 @@ function zeroChapters() {
   return FULL_CHAPTER_LIST.filter(c => !registered.has(c));
 }
 
-// Not real MENA chapters — YPO Management/staff placeholder. Always pinned to the
-// bottom of chapter lists rather than sorted in with real chapters.
-const PINNED_LABELS = ["No Chapter Needed"];
+// Anything outside FULL_CHAPTER_LIST is not a MENA chapter (YPO staff placeholder,
+// guest panelists from other regions, ...). Those rows never count toward chapter
+// totals and are always pinned to the bottom of chapter lists with a short tag.
+const PINNED_TAGS = {
+  "No Chapter Needed": "not a chapter",
+  "YPO Gold Taiwan": "non-MENA · ALO workshop panelist",
+};
+function isPinned(chapter) { return !FULL_CHAPTER_LIST.includes(chapter); }
+function pinnedTag(chapter) { return PINNED_TAGS[chapter] || "not a MENA chapter"; }
+function pinnedLabels(rows) {
+  return [...new Set(rows.map(r => r.chapter).filter(isPinned))].sort((a, b) => a.localeCompare(b));
+}
 
 function roleColor(role) { return ROLE_COLORS[role] || "#455A64"; }
 function roleAbbr(role) { return ROLE_ABBR[role] || role; }
@@ -105,7 +114,7 @@ function attendsSession(r, session) {
 // ---------- KPI cards ----------
 function renderKPIs() {
   const total = REGISTRANTS.length;
-  const chapters = new Set(REGISTRANTS.map(r => r.chapter).filter(c => !PINNED_LABELS.includes(c))).size;
+  const chapters = new Set(REGISTRANTS.map(r => r.chapter).filter(c => !isPinned(c))).size;
   const welcome = REGISTRANTS.filter(r => attendsSession(r, "Welcome Social")).length;
   const mastery = REGISTRANTS.filter(r => attendsSession(r, "MENA Mastery Sessions")).length;
   const white = REGISTRANTS.filter(r => attendsSession(r, "MENA White Party")).length;
@@ -115,7 +124,7 @@ function renderKPIs() {
 
   const kpis = [
     { num: total, lbl: "Total Registrants" },
-    { num: chapters, lbl: "Chapters Represented" },
+    { num: `${chapters} / ${FULL_CHAPTER_LIST.length}`, lbl: "MENA Chapters Represented" },
     { num: welcome, lbl: "Welcome Social" },
     { num: mastery, lbl: "MENA Mastery Sessions" },
     { num: white, lbl: "MENA White Party" },
@@ -139,7 +148,7 @@ function renderChapterBars() {
   const zeros = zeroChapters();
 
   const entries = Object.entries(counts)
-    .filter(([chapter]) => !PINNED_LABELS.includes(chapter))
+    .filter(([chapter]) => !isPinned(chapter))
     .sort((a, b) => b[1] - a[1]);
   const max = entries.length ? entries[0][1] : 1;
   const wrap = document.getElementById("chapterBars");
@@ -161,12 +170,11 @@ function renderChapterBars() {
     ]));
   });
 
-  // Pinned non-chapter rows (YPO Management/staff) always come last.
-  PINNED_LABELS.forEach(label => {
-    const count = counts[label] || 0;
-    if (count === 0) return;
+  // Pinned non-MENA rows always come last.
+  pinnedLabels(REGISTRANTS).forEach(label => {
+    const count = counts[label];
     wrap.appendChild(el("div", { class: "bar-row pinned-bar" }, [
-      el("div", { class: "bar-label", title: label + " — not a MENA chapter" }, [document.createTextNode(label)]),
+      el("div", { class: "bar-label", title: label + " — " + pinnedTag(label) }, [document.createTextNode(label)]),
       el("div", { class: "bar-track" }, [el("div", { class: "bar-fill", style: `width:${Math.max(4, Math.round((count / max) * 100))}%` }, [])]),
       el("div", { class: "bar-count" }, [document.createTextNode(count)]),
     ]));
@@ -277,7 +285,7 @@ function buildChapterBreakdown(filtered) {
     byChapter[r.chapter][r.role] = (byChapter[r.chapter][r.role] || 0) + 1;
   });
   let rows = Object.entries(byChapter)
-    .filter(([chapter]) => !PINNED_LABELS.includes(chapter))
+    .filter(([chapter]) => !isPinned(chapter))
     .map(([chapter, roleCounts]) => {
       const total = Object.values(roleCounts).reduce((a, b) => a + b, 0);
       return { chapter, roleCounts, total };
@@ -285,12 +293,10 @@ function buildChapterBreakdown(filtered) {
 
   rows.sort(compareRows);
 
-  // Pinned non-chapter rows (YPO Management/staff) always come last, unsorted.
-  PINNED_LABELS.forEach(label => {
-    if (byChapter[label]) {
-      const total = Object.values(byChapter[label]).reduce((a, b) => a + b, 0);
-      rows.push({ chapter: label, roleCounts: byChapter[label], total, isPinned: true });
-    }
+  // Pinned non-MENA rows always come last, alphabetically.
+  pinnedLabels(filtered).forEach(label => {
+    const total = Object.values(byChapter[label]).reduce((a, b) => a + b, 0);
+    rows.push({ chapter: label, roleCounts: byChapter[label], total, isPinned: true });
   });
 
   return rows;
@@ -325,8 +331,12 @@ function applyFiltersAndRender() {
   renderTable(rows);
   const totalPeople = rows.reduce((sum, r) => sum + r.total, 0);
   const zeroCount = rows.filter(r => r.isZero).length;
+  const pinnedCount = rows.filter(r => r.isPinned).length;
+  const chapterCount = rows.length - pinnedCount;
   document.getElementById("resultCount").textContent =
-    `Showing ${rows.length} chapters · ${totalPeople} registrants matching filters` +
+    `Showing ${chapterCount} MENA chapter${chapterCount === 1 ? "" : "s"}` +
+    (pinnedCount ? ` + ${pinnedCount} non-MENA` : "") +
+    ` · ${totalPeople} registrants matching filters` +
     (zeroCount ? ` · ${zeroCount} with zero registrations` : "");
 }
 
@@ -351,7 +361,7 @@ function renderTable(rows) {
 
     const tr = el("tr", { class: r.isZero ? "zero-row" : (r.isPinned ? "pinned-row" : "") }, []);
     const chapterTd = el("td", { class: "chapter-cell" }, [document.createTextNode(r.chapter)]);
-    if (r.isPinned) chapterTd.appendChild(el("span", { class: "pinned-tag" }, [document.createTextNode("not a chapter")]));
+    if (r.isPinned) chapterTd.appendChild(el("span", { class: "pinned-tag" }, [document.createTextNode(pinnedTag(r.chapter))]));
     tr.appendChild(chapterTd);
 
     const chipsWrap = el("div", { class: "role-chips" }, []);
