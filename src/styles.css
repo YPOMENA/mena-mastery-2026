@@ -87,7 +87,10 @@
   table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 680px; }
   thead th { background: var(--navy); color: #fff; text-align: left; padding: 9px 16px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; }
   thead th:hover { background: var(--navy-soft); }
-  thead th .arrow { font-size: 9px; opacity: 0.7; margin-left: 4px; }
+  thead th .arrow { font-size: 9px; opacity: 0.45; margin-left: 4px; }
+  thead th.sorted .arrow { opacity: 1; }
+  thead th:focus-visible { outline: 2px solid var(--orange); outline-offset: -2px; }
+  .filters .sort-label { font-size: 12px; color: var(--muted); }
   tbody td { padding: 9px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tbody tr:nth-child(even) { background: var(--row-alt); }
   .chapter-cell { font-weight: 600; }
@@ -123,6 +126,7 @@
 
   .pinned-row td { background: var(--row-alt); font-style: italic; }
   .pinned-row .chapter-cell { border-left: 3px solid var(--muted); padding-left: 13px; font-style: italic; }
+  .pinned-row .total-cell { background: #6b7280; font-style: normal; }
   .pinned-tag {
     display: inline-block; font-size: 10px; color: var(--muted); font-style: normal;
     border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; margin-left: 6px;
