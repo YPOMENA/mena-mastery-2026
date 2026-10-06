@@ -76,6 +76,14 @@ function zeroChapters() {
   return FULL_CHAPTER_LIST.filter(c => !registered.has(c));
 }
 
+// Chapter values in the export that are really YPO staff entries; folded into
+// "No Chapter Needed" on load so every staff registrant sits in one row.
+const CHAPTER_ALIASES = {
+  "Exchange Test": "No Chapter Needed",
+  "Family": "No Chapter Needed",
+};
+REGISTRANTS.forEach(r => { if (CHAPTER_ALIASES[r.chapter]) r.chapter = CHAPTER_ALIASES[r.chapter]; });
+
 // Anything outside FULL_CHAPTER_LIST is not a MENA chapter (YPO staff placeholder,
 // guest panelists from other regions, ...). Those rows never count toward chapter
 // totals and are always pinned to the bottom of chapter lists with a short tag.
