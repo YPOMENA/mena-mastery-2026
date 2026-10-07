@@ -42,7 +42,8 @@ the top of `src/dashboard.js` as `FULL_CHAPTER_LIST`. Update it there if the ros
 of MENA chapters changes. Any chapter in the data that is not on this list (e.g. "No
 Chapter Needed" for YPO staff, or a guest panelist's home chapter) is never counted as
 a MENA chapter; it is pinned to the bottom of chapter lists with a tag from
-`PINNED_TAGS`.
+`PINNED_TAGS`. Chapter values that should be filed under another label (e.g. staff
+entries exported as "Exchange Test" or "Family") are remapped via `CHAPTER_ALIASES`.
 
 ## Deploying on GitHub Pages
 
