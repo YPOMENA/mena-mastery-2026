@@ -84,6 +84,16 @@ const CHAPTER_ALIASES = {
 };
 REGISTRANTS.forEach(r => { if (CHAPTER_ALIASES[r.chapter]) r.chapter = CHAPTER_ALIASES[r.chapter]; });
 
+// Confirmed roles that the export gets wrong, as chapter -> { exported role: correct role }.
+// Applied on load, after CHAPTER_ALIASES.
+const ROLE_OVERRIDES = {
+  "YPO Gold Lebanon": { "Membership Officer": "Member Engagement Officer" },
+};
+REGISTRANTS.forEach(r => {
+  const fix = ROLE_OVERRIDES[r.chapter];
+  if (fix && fix[r.role]) r.role = fix[r.role];
+});
+
 // Anything outside FULL_CHAPTER_LIST is not a MENA chapter (YPO staff placeholder,
 // guest panelists from other regions, ...). Those rows never count toward chapter
 // totals and are always pinned to the bottom of chapter lists with a short tag.
