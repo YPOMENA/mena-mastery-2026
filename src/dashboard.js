@@ -13,6 +13,7 @@ const ROLE_ABBR = {
   "Spouse/Partner Officer":     "SPO",
   "YPO Management Associate":   "MA",
   "Regional Chair":             "RC",
+  "YNG":                        "YNG",
   "Panelist":                   "PAN",
   "Other":                      "OTH",
 };
@@ -32,6 +33,7 @@ const ROLE_COLORS = {
   "Spouse/Partner Officer":     "#D81B60",
   "YPO Management Associate":   "#555555",
   "Regional Chair":             "#B71C1C",
+  "YNG":                        "#558B2F",
   "Panelist":                   "#6D4C41",
   "Other":                      "#616161",
 };
@@ -88,6 +90,7 @@ REGISTRANTS.forEach(r => { if (CHAPTER_ALIASES[r.chapter]) r.chapter = CHAPTER_A
 // Applied on load, after CHAPTER_ALIASES.
 const ROLE_OVERRIDES = {
   "YPO Gold Lebanon": { "Membership Officer": "Member Engagement Officer" },
+  "YPO Oman Integrated": { "Other": "YNG" },
 };
 REGISTRANTS.forEach(r => {
   const fix = ROLE_OVERRIDES[r.chapter];
@@ -265,7 +268,7 @@ function renderLegend() {
   ROLE_ORDER.forEach(role => {
     wrap.appendChild(el("span", { class: "item" }, [
       el("span", { class: "swatch", style: `background:${roleColor(role)}` }, []),
-      document.createTextNode(`${roleAbbr(role)} — ${role}`),
+      document.createTextNode(roleAbbr(role) === role ? role : `${roleAbbr(role)} — ${role}`),
     ]));
   });
 }
