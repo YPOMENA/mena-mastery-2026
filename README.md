@@ -43,7 +43,8 @@ of MENA chapters changes. Any chapter in the data that is not on this list (e.g.
 Chapter Needed" for YPO staff, or a guest panelist's home chapter) is never counted as
 a MENA chapter; it is pinned to the bottom of chapter lists with a tag from
 `PINNED_TAGS`. Chapter values that should be filed under another label (e.g. staff
-entries exported as "Exchange Test" or "Family") are remapped via `CHAPTER_ALIASES`.
+entries exported as "Exchange Test" or "Family") are remapped via `CHAPTER_ALIASES`. Roles the export gets wrong for a given chapter (confirmed
+by the events team) are corrected via `ROLE_OVERRIDES`.
 
 ## Deploying on GitHub Pages
 
