@@ -161,27 +161,39 @@ const SESSION_BY_ROLE = {
 const SESSION_BY_CHAPTER = {
   "YPO Gold Taiwan": "Assistant Learning Session", // ALO workshop panelist
 };
-// Roles split across sessions by headcount rather than per person (only used
-// where it doesn't matter who goes where, e.g. YPO staff who share one row).
-// Anyone left over after the quotas has no session.
-const SESSION_QUOTAS = {
+// Per-role, per-chapter session assignments for roles with no single session.
+// Each chapter's list is handed out in order to that chapter's registrants with
+// the role; anyone left over has no session. Who gets which slot within a
+// chapter doesn't matter, as the dashboard only shows chapter-level counts.
+const SESSION_ASSIGNMENTS = {
+  "MENA REX Officer": {
+    "YPO Lebanon":                   ["Member Engagement Session"],
+    "YPO Emirates Integrated":       ["Member Engagement Session"],
+    "YPO Dubai Integrated":          ["Assistant Learning Session"],
+    "YPO Dubai Downtown Integrated": ["Forum & Spouse Forum Session", "Spouse & Family Session"],
+    "YPO Khaleej Integrated":        ["Membership Session"],
+  },
   "YPO Management Associate": {
-    "Member Engagement Session": 1,
-    "Learning Session": 1,
-    "Assistant Learning Session": 1,
-    "Forum & Spouse Forum Session": 1,
-    "Membership Session": 1,
-    "Spouse & Family Session": 1,
+    "No Chapter Needed": [
+      "Member Engagement Session",
+      "Learning Session",
+      "Assistant Learning Session",
+      "Forum & Spouse Forum Session",
+      "Membership Session",
+      "Spouse & Family Session",
+    ],
   },
 };
-const QUOTA_SESSION = new Map();
-Object.entries(SESSION_QUOTAS).forEach(([role, quotas]) => {
-  const slots = Object.entries(quotas).flatMap(([s, n]) => Array(n).fill(s));
-  REGISTRANTS.filter(r => r.role === role).forEach((r, i) => { if (slots[i]) QUOTA_SESSION.set(r, slots[i]); });
+const ASSIGNED_SESSION = new Map();
+Object.entries(SESSION_ASSIGNMENTS).forEach(([role, byChapter]) => {
+  Object.entries(byChapter).forEach(([chapter, slots]) => {
+    REGISTRANTS.filter(r => r.role === role && r.chapter === chapter)
+      .forEach((r, i) => { if (slots[i]) ASSIGNED_SESSION.set(r, slots[i]); });
+  });
 });
 
 function sessionFor(r) {
-  return SESSION_BY_CHAPTER[r.chapter] || QUOTA_SESSION.get(r) || SESSION_BY_ROLE[r.role] || NO_SESSION;
+  return SESSION_BY_CHAPTER[r.chapter] || ASSIGNED_SESSION.get(r) || SESSION_BY_ROLE[r.role] || NO_SESSION;
 }
 
 // ---------- KPI cards ----------
