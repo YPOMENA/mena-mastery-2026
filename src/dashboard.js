@@ -127,31 +127,53 @@ function el(tag, attrs, children) {
   return e;
 }
 
-// Everyone registered counts as a MENA Mastery attendee, including registrants who
-// left their session selection empty. Other sessions count only when selected.
-const ALL_ATTEND_SESSION = "MENA Mastery Sessions";
-function attendsSession(r, session) {
-  return session === ALL_ATTEND_SESSION || r.sessions.includes(session);
+// MENA Mastery breakout sessions. Each registrant goes to one session, worked
+// out from their role (the export has no session field). Roles not listed here
+// (REX, YPO staff, YNG, Other) have no session.
+const SESSIONS = [
+  "Chapter Chair Session",
+  "Learning Session",
+  "Assistant Learning Session",
+  "Forum & Spouse Forum Session",
+  "Membership Session",
+  "Member Engagement Session",
+  "Spouse & Family Session",
+];
+const NO_SESSION = "No session";
+const SESSION_BY_ROLE = {
+  "Chapter Chair":              "Chapter Chair Session",
+  "Chapter Vice Chair":         "Chapter Chair Session",
+  "Regional Chair":             "Chapter Chair Session",
+  "Learning Officer":           "Learning Session",
+  "Assistant Learning Officer": "Assistant Learning Session",
+  "Chapter Manager":            "Assistant Learning Session",
+  "Forum Officer":              "Forum & Spouse Forum Session",
+  "Spouse Forum Officer":       "Forum & Spouse Forum Session",
+  "Membership Officer":         "Membership Session",
+  "Member Engagement Officer":  "Member Engagement Session",
+  "Spouse/Partner Officer":     "Spouse & Family Session",
+  "Family Officer":             "Spouse & Family Session",
+};
+// Chapter-level exceptions, checked before the role mapping.
+const SESSION_BY_CHAPTER = {
+  "YPO Gold Taiwan": "Assistant Learning Session", // ALO workshop panelist
+};
+function sessionFor(r) {
+  return SESSION_BY_CHAPTER[r.chapter] || SESSION_BY_ROLE[r.role] || NO_SESSION;
 }
 
 // ---------- KPI cards ----------
 function renderKPIs() {
   const total = REGISTRANTS.length;
   const chapters = new Set(REGISTRANTS.map(r => r.chapter).filter(c => !isPinned(c))).size;
-  const welcome = REGISTRANTS.filter(r => attendsSession(r, "Welcome Social")).length;
-  const mastery = REGISTRANTS.filter(r => attendsSession(r, "MENA Mastery Sessions")).length;
-  const white = REGISTRANTS.filter(r => attendsSession(r, "MENA White Party")).length;
-  const spousesTotal = REGISTRANTS.filter(r => r.welcomeSpouse === "Yes" || r.whiteSpouse === "Yes").length;
+  const inSession = REGISTRANTS.filter(r => sessionFor(r) !== NO_SESSION).length;
 
   const zeros = zeroChapters();
 
   const kpis = [
     { num: total, lbl: "Total Registrants" },
     { num: `${chapters} / ${FULL_CHAPTER_LIST.length}`, lbl: "MENA Chapters Represented" },
-    { num: welcome, lbl: "Welcome Social" },
-    { num: mastery, lbl: "MENA Mastery Sessions" },
-    { num: white, lbl: "MENA White Party" },
-    { num: spousesTotal, lbl: "Bringing a Spouse/Partner" },
+    { num: inSession, lbl: "Assigned to a Session" },
     { num: zeros.length, lbl: "Chapters w/ Zero Registrations", warn: zeros.length > 0 },
   ];
 
@@ -236,30 +258,16 @@ function renderRoleBars() {
 // ---------- Session cards ----------
 function renderSessionCards() {
   const total = REGISTRANTS.length;
-  const sessionsOrder = ["Welcome Social", "MENA Mastery Sessions", "MENA White Party"];
   const wrap = document.getElementById("sessionCards");
-  sessionsOrder.forEach(s => {
-    const count = REGISTRANTS.filter(r => attendsSession(r, s)).length;
+  [...SESSIONS, NO_SESSION].forEach(s => {
+    const count = REGISTRANTS.filter(r => sessionFor(r) === s).length;
     const pct = total ? Math.round((count / total) * 100) : 0;
-    wrap.appendChild(el("div", { class: "session-card" }, [
+    wrap.appendChild(el("div", { class: "session-card" + (s === NO_SESSION ? " no-session" : "") }, [
       el("div", {}, [
         el("div", { class: "session-name" }, [document.createTextNode(s)]),
         el("div", { class: "session-pct" }, [document.createTextNode(pct + "% of registrants")]),
       ]),
       el("div", { class: "session-num" }, [document.createTextNode(count)]),
-    ]));
-  });
-
-  const spouseWrap = document.getElementById("spouseCards");
-  const welcomeSp = REGISTRANTS.filter(r => r.welcomeSpouse === "Yes").length;
-  const whiteSp = REGISTRANTS.filter(r => r.whiteSpouse === "Yes").length;
-  [
-    { name: "Welcome Social +1", count: welcomeSp },
-    { name: "White Party +1", count: whiteSp },
-  ].forEach(s => {
-    spouseWrap.appendChild(el("div", { class: "session-card" }, [
-      el("div", {}, [el("div", { class: "session-name" }, [document.createTextNode(s.name)])]),
-      el("div", { class: "session-num" }, [document.createTextNode(s.count)]),
     ]));
   });
 }
@@ -286,6 +294,8 @@ function compareRows(a, b) {
 }
 
 function populateFilterOptions() {
+  const sessionSel = document.getElementById("sessionFilter");
+  [...SESSIONS, NO_SESSION].forEach(s => sessionSel.appendChild(el("option", { value: s }, [document.createTextNode(s)])));
   const roleSel = document.getElementById("roleFilter");
   ROLE_ORDER.forEach(r => {
     const count = REGISTRANTS.filter(x => x.role === r).length;
@@ -329,7 +339,7 @@ function applyFiltersAndRender() {
   const f = currentFilters();
   let filtered = REGISTRANTS.filter(r => {
     if (f.role && r.role !== f.role) return false;
-    if (f.session && !attendsSession(r, f.session)) return false;
+    if (f.session && sessionFor(r) !== f.session) return false;
     return true;
   });
 

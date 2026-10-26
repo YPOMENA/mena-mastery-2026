@@ -67,6 +67,8 @@
   .session-name { font-size: 13px; font-weight: 600; }
   .session-pct { font-size: 11px; color: var(--muted); }
   .session-num { font-size: 20px; font-weight: 700; color: var(--navy); }
+  .session-card.no-session { border-top: 1px dashed var(--border); padding-top: 10px; }
+  .session-card.no-session .session-name { color: var(--muted); font-style: italic; }
   :root[data-theme="dark"] .session-num { color: #7fb0ff; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .session-num { color: #7fb0ff; } }
 
