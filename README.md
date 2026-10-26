@@ -37,6 +37,10 @@ const REGISTRANTS = [
 ];
 ```
 
+Invitees who declined or cancelled live in `src/declined.js` as a `DECLINED` array
+(status, chapter, roles, optional note — no names). They are shown in their own
+section and never counted in the registrant totals.
+
 The chapter master list (used to flag chapters with zero registrations) lives near
 the top of `src/dashboard.js` as `FULL_CHAPTER_LIST`. Update it there if the roster
 of MENA chapters changes. Any chapter in the data that is not on this list (e.g. "No
