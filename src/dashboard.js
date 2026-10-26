@@ -179,6 +179,7 @@ const SESSION_ASSIGNMENTS = {
   },
   "YPO Management Associate": {
     "No Chapter Needed": [
+      "Chapter Chair Session",
       "Member Engagement Session",
       "Learning Session",
       "Assistant Learning Session",
