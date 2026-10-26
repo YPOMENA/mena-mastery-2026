@@ -173,6 +173,10 @@ const SESSION_ASSIGNMENTS = {
     "YPO Dubai Downtown Integrated": ["Forum & Spouse Forum Session", "Spouse & Family Session"],
     "YPO Khaleej Integrated":        ["Membership Session"],
   },
+  "YNG": {
+    "YPO Oman Integrated": ["Chapter Chair Session"],
+    "YPO Gold Pakistan":   ["Membership Session"],
+  },
   "YPO Management Associate": {
     "No Chapter Needed": [
       "Member Engagement Session",
