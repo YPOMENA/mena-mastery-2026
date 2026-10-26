@@ -37,6 +37,11 @@ const REGISTRANTS = [
 ];
 ```
 
+Each registrant's breakout session is worked out from their role via
+`SESSION_BY_ROLE` in `src/dashboard.js` (the export's `sessions` and spouse fields
+are kept in the data but no longer shown). `SESSION_BY_CHAPTER` holds exceptions,
+e.g. the YPO Gold Taiwan panelist at the ALO workshop.
+
 Invitees who declined or cancelled live in `src/declined.js` as a `DECLINED` array
 (status, chapter, roles, optional note — no names). They are shown in their own
 section and never counted in the registrant totals.
