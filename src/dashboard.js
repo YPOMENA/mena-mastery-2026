@@ -95,6 +95,7 @@ REGISTRANTS.forEach(r => { if (CHAPTER_ALIASES[r.chapter]) r.chapter = CHAPTER_A
 const ROLE_OVERRIDES = {
   "YPO Gold Lebanon": { "Membership Officer": "Member Engagement Officer" },
   "YPO Oman Integrated": { "Other": "YNG" },
+  "YPO Gold Taiwan": { "Other": "Panelist" },
 };
 REGISTRANTS.forEach(r => {
   const fix = ROLE_OVERRIDES[r.chapter];
@@ -544,7 +545,7 @@ function renderDeclined() {
       }
       body.appendChild(el("tr", {}, [
         el("td", {}, [el("span", { class: `status-pill status-${d.status.toLowerCase()}` }, [document.createTextNode(d.status)])]),
-        el("td", { class: "chapter-cell" }, [document.createTextNode(d.chapter || "Unverified")]),
+        el("td", { class: "chapter-cell" }, [document.createTextNode(d.chapter)]),
         el("td", {}, [roles]),
         el("td", { class: "declined-note" }, [document.createTextNode(d.note || "")]),
       ]));

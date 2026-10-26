@@ -3,8 +3,8 @@
 const DECLINED = [
   { status: "Declined", chapter: "YPO Cairo Integrated", roles: ["Chapter Chair"] },
   { status: "Declined", chapter: "YPO Tunisia Integrated", roles: ["Assistant Learning Officer", "Member Engagement Officer"] },
-  { status: "Declined", chapter: "YNG MENA Regional Board", roles: ["YNG"] },
-  { status: "Declined", chapter: "YNG MENA Regional Board", roles: ["YNG"] },
+  { status: "Declined", chapter: "", roles: ["YNG"] },
+  { status: "Declined", chapter: "", roles: ["YNG"] },
   { status: "Declined", chapter: "YPO Lebanon", roles: ["Chapter Chair"] },
   { status: "Declined", chapter: "YPO Palestine Integrated", roles: ["Member Engagement Officer"] },
   { status: "Declined", chapter: "YPO Gold Saudi", roles: ["Assistant Learning Officer"] },
