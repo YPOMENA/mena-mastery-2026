@@ -471,6 +471,37 @@ function setupFilterEvents() {
   });
 }
 
+// ---------- Declined & cancelled ----------
+// Not part of REGISTRANTS, so they never affect the counts above.
+function renderDeclined() {
+  const body = document.getElementById("declinedBody");
+  const byStatus = {};
+  DECLINED.forEach(d => byStatus[d.status] = (byStatus[d.status] || 0) + 1);
+  document.getElementById("declinedCount").textContent =
+    `${DECLINED.length} people · ` +
+    Object.entries(byStatus).map(([s, n]) => `${n} ${s.toLowerCase()}`).join(" · ") +
+    " · not counted in the registrant totals";
+
+  const order = { Cancelled: 0, Declined: 1 };
+  [...DECLINED]
+    .sort((a, b) => (order[a.status] ?? 2) - (order[b.status] ?? 2) || !a.chapter - !b.chapter || a.chapter.localeCompare(b.chapter))
+    .forEach(d => {
+      const roles = el("div", { class: "role-chips" }, []);
+      if (d.roles.length) {
+        d.roles.forEach(role => roles.appendChild(el("span", { class: "role-chip", style: `background:${roleColor(role)}`, title: role },
+          [document.createTextNode(role)])));
+      } else {
+        roles.appendChild(el("span", { class: "dash" }, [document.createTextNode("Unknown")]));
+      }
+      body.appendChild(el("tr", {}, [
+        el("td", {}, [el("span", { class: `status-pill status-${d.status.toLowerCase()}` }, [document.createTextNode(d.status)])]),
+        el("td", { class: "chapter-cell" }, [document.createTextNode(d.chapter || "Unverified")]),
+        el("td", {}, [roles]),
+        el("td", { class: "declined-note" }, [document.createTextNode(d.note || "")]),
+      ]));
+    });
+}
+
 renderKPIs();
 renderChapterBars();
 renderRoleBars();
@@ -480,3 +511,4 @@ populateFilterOptions();
 setupSortableHeaders();
 setupFilterEvents();
 applyFiltersAndRender();
+renderDeclined();
