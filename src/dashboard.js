@@ -78,9 +78,11 @@ function zeroChapters() {
   return FULL_CHAPTER_LIST.filter(c => !registered.has(c));
 }
 
-// Chapter values in the export that are really YPO staff entries; folded into
-// "No Chapter Needed" on load so every staff registrant sits in one row.
+// Chapter values in the export that are really YPO staff entries (including a
+// blank chapter); folded into "No Chapter Needed" on load so every staff
+// registrant sits in one row.
 const CHAPTER_ALIASES = {
+  "": "No Chapter Needed",
   "Exchange Test": "No Chapter Needed",
   "Family": "No Chapter Needed",
 };
