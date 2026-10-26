@@ -9,6 +9,7 @@ const ROLE_ABBR = {
   "Forum Officer":              "FO",
   "Spouse Forum Officer":       "SFO",
   "Member Engagement Officer":  "MEO",
+  "Member Engagement Vice Officer": "MEVO",
   "Family Officer":             "FAM",
   "Spouse/Partner Officer":     "SPO",
   "YPO Management Associate":   "MA",
@@ -29,6 +30,7 @@ const ROLE_COLORS = {
   "Forum Officer":              "#AD1457",
   "Spouse Forum Officer":       "#C2185B",
   "Member Engagement Officer":  "#3949AB",
+  "Member Engagement Vice Officer": "#283593",
   "Family Officer":             "#00695C",
   "Spouse/Partner Officer":     "#D81B60",
   "YPO Management Associate":   "#555555",
@@ -151,6 +153,7 @@ const SESSION_BY_ROLE = {
   "Spouse Forum Officer":       "Forum & Spouse Forum Session",
   "Membership Officer":         "Membership Session",
   "Member Engagement Officer":  "Member Engagement Session",
+  "Member Engagement Vice Officer": "Member Engagement Session",
   "Spouse/Partner Officer":     "Spouse & Family Session",
   "Family Officer":             "Spouse & Family Session",
 };
