@@ -98,6 +98,7 @@ const ROLE_OVERRIDES = {
   "YPO Gold Lebanon": { "Membership Officer": "Member Engagement Officer" },
   "YPO Oman Integrated": { "Other": "YNG" },
   "YPO Gold Taiwan": { "Other": "Panelist" },
+  "YPO Jordan Integrated": { "Regional Chair": "Chapter Chair" },
 };
 REGISTRANTS.forEach(r => {
   const fix = ROLE_OVERRIDES[r.chapter];
