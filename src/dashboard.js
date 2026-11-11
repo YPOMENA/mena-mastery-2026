@@ -17,6 +17,8 @@ const ROLE_ABBR = {
   "Regional Chair":             "RC",
   "YNG":                        "YNG",
   "Panelist":                   "PAN",
+  "Speaker":                    "SPK",
+  "CFF":                        "CFF",
   "Other":                      "OTH",
 };
 
@@ -39,6 +41,8 @@ const ROLE_COLORS = {
   "Regional Chair":             "#B71C1C",
   "YNG":                        "#558B2F",
   "Panelist":                   "#6D4C41",
+  "Speaker":                    "#4E342E",
+  "CFF":                        "#00796B",
   "Other":                      "#616161",
 };
 
@@ -111,6 +115,7 @@ REGISTRANTS.forEach(r => {
 const PINNED_TAGS = {
   "No Chapter Needed": "not a chapter",
   "YPO Gold Taiwan": "non-MENA · ALO workshop panelist",
+  "Needs Chapter": "chapter not provided",
 };
 function isPinned(chapter) { return !FULL_CHAPTER_LIST.includes(chapter); }
 function pinnedTag(chapter) { return PINNED_TAGS[chapter] || "not a MENA chapter"; }
