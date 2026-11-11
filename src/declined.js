@@ -10,4 +10,7 @@ const DECLINED = [
   { status: "Declined", chapter: "YPO Gold Saudi", roles: ["Assistant Learning Officer"] },
   { status: "Declined", chapter: "YPO Gold Lebanon", roles: ["Forum Officer"] },
   { status: "Cancelled", chapter: "YPO MENA One Regional Integrated", roles: ["Membership Officer"] },
+  { status: "Cancelled", chapter: "YPO Pakistan", roles: ["Spouse Forum Officer"] },
+  { status: "Cancelled", chapter: "YPO UAE Integrated", roles: ["Learning Officer"] },
+  { status: "Cancelled", chapter: "YPO UAE Integrated", roles: ["Membership Officer"] },
 ];
