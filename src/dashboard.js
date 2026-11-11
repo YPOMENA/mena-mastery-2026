@@ -17,6 +17,8 @@ const ROLE_ABBR = {
   "Regional Chair":             "RC",
   "YNG":                        "YNG",
   "Panelist":                   "PAN",
+  "Speaker":                    "SPK",
+  "Certified Forum Facilitator": "CFF",
   "Other":                      "OTH",
 };
 
@@ -39,6 +41,8 @@ const ROLE_COLORS = {
   "Regional Chair":             "#B71C1C",
   "YNG":                        "#558B2F",
   "Panelist":                   "#6D4C41",
+  "Speaker":                    "#4E342E",
+  "Certified Forum Facilitator": "#00796B",
   "Other":                      "#616161",
 };
 
@@ -92,6 +96,12 @@ const CHAPTER_ALIASES = {
 };
 REGISTRANTS.forEach(r => { if (CHAPTER_ALIASES[r.chapter]) r.chapter = CHAPTER_ALIASES[r.chapter]; });
 
+// Short role names in the export, spelled out everywhere on the page.
+const ROLE_ALIASES = {
+  "CFF": "Certified Forum Facilitator",
+};
+REGISTRANTS.forEach(r => { if (ROLE_ALIASES[r.role]) r.role = ROLE_ALIASES[r.role]; });
+
 // Confirmed roles that the export gets wrong, as chapter -> { exported role: correct role }.
 // Applied on load, after CHAPTER_ALIASES.
 const ROLE_OVERRIDES = {
@@ -111,6 +121,7 @@ REGISTRANTS.forEach(r => {
 const PINNED_TAGS = {
   "No Chapter Needed": "not a chapter",
   "YPO Gold Taiwan": "non-MENA · ALO workshop panelist",
+  "Needs Chapter": "chapter not provided",
 };
 function isPinned(chapter) { return !FULL_CHAPTER_LIST.includes(chapter); }
 function pinnedTag(chapter) { return PINNED_TAGS[chapter] || "not a MENA chapter"; }
@@ -135,7 +146,8 @@ function el(tag, attrs, children) {
 
 // MENA Mastery breakout sessions. Each registrant goes to one session, worked
 // out from their role (the export has no session field). Roles not listed here
-// (REX, YPO staff, YNG, Other) have no session.
+// (REX, YPO staff, YNG, Certified Forum Facilitator, Speaker, Other) have no
+// session unless SESSION_ASSIGNMENTS gives one.
 const SESSIONS = [
   "Chapter Chair Session",
   "Learning Session",
@@ -193,6 +205,7 @@ const SESSION_ASSIGNMENTS = {
       "Forum & Spouse Forum Session",
       "Membership Session",
       "Spouse & Family Session",
+      "Membership Session",
     ],
   },
 };
