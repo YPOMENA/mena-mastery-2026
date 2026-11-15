@@ -13,4 +13,8 @@ const DECLINED = [
   { status: "Cancelled", chapter: "YPO Pakistan", roles: ["Spouse Forum Officer"] },
   { status: "Cancelled", chapter: "YPO UAE Integrated", roles: ["Learning Officer"] },
   { status: "Cancelled", chapter: "YPO UAE Integrated", roles: ["Membership Officer"] },
+  { status: "Cancelled", chapter: "YPO Capital Pakistan Integrated", roles: ["Chapter Manager"] },
+  { status: "Cancelled", chapter: "YPO Dubai Downtown Integrated", roles: ["Spouse Forum Officer"] },
+  { status: "Cancelled", chapter: "YPO Indus Integrated", roles: ["Chapter Manager"] },
+  { status: "Cancelled", chapter: "YPO UAE Integrated", roles: ["Member Engagement Officer"] },
 ];
