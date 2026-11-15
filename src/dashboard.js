@@ -186,7 +186,7 @@ const SESSION_ASSIGNMENTS = {
   "MENA REX Officer": {
     "YPO Lebanon":                   ["Member Engagement Session"],
     "YPO Emirates Integrated":       ["Member Engagement Session", "Learning Session"],
-    "YPO Dubai Integrated":          ["Assistant Learning Session"],
+    "YPO Dubai Integrated":          ["Assistant Learning Session", "Forum & Spouse Forum Session"],
     "YPO Dubai Downtown Integrated": ["Forum & Spouse Forum Session", "Spouse & Family Session"],
     "YPO Khaleej Integrated":        ["Membership Session"],
     // YPO Jordan's REX and Dubai Downtown's third REX: no session (confirmed).
