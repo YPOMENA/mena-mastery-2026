@@ -20,4 +20,11 @@ const DECLINED = [
   { status: "Cancelled", chapter: "YPO Saudi", roles: ["Member Engagement Officer"] },
   { status: "Cancelled", chapter: "YPO MENA Gulf Regional Integrated", roles: ["Chapter Chair"] },
   { status: "Cancelled", chapter: "No Chapter Needed", roles: ["YPO Management Associate"] },
+  { status: "Cancelled", chapter: "YPO Capital Pakistan Integrated", roles: ["Spouse Forum Officer"] },
+  { status: "Cancelled", chapter: "YPO Jordan Integrated", roles: ["Chapter Chair"] },
+  { status: "Cancelled", chapter: "YPO Bahrain Integrated", roles: ["Chapter Manager"] },
+  { status: "Cancelled", chapter: "YPO Bahrain Integrated", roles: ["Assistant Learning Officer"] },
+  { status: "Cancelled", chapter: "YPO Dubai Integrated", roles: ["Chapter Manager"] },
+  { status: "Cancelled", chapter: "YPO Dubai Integrated", roles: ["Chapter Manager"] },
+  { status: "Cancelled", chapter: "YPO Gold Pakistan", roles: ["Learning Officer"] },
 ];
