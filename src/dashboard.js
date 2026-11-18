@@ -183,6 +183,11 @@ const SESSION_BY_CHAPTER = {
 // the role; anyone left over has no session. Who gets which slot within a
 // chapter doesn't matter, as the dashboard only shows chapter-level counts.
 const SESSION_ASSIGNMENTS = {
+  // Exception (confirmed): YPO Dubai Integrated's Membership Officer is not
+  // attending the MENA Mastery sessions.
+  "Membership Officer": {
+    "YPO Dubai Integrated":          [NO_SESSION],
+  },
   "MENA REX Officer": {
     "YPO Lebanon":                   ["Member Engagement Session"],
     "YPO Emirates Integrated":       ["Member Engagement Session", "Learning Session"],
